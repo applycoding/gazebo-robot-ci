@@ -3,11 +3,11 @@ gazebo-robot-ci, Copyright 2026 Arpan Bom
 This product includes software developed under the Apache License 2.0 unless noted.
 
 Third-party components. Versions below are taken from GitHub Actions run 42974445209
-logs, apt-pins.txt, .github/workflow-pins.md, .github/workflows/ci.yml, and
-web/package-lock.json. See REFERENCES.md for upstream project URLs and for
-projects used as references only.
+logs, the dpkg-query output of run 43022638286, apt-pins.txt,
+.github/workflow-pins.md, .github/workflows/ci.yml, and web/package-lock.json.
+See REFERENCES.md for upstream project URLs and for projects used as references only.
 
-Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute), versions from run 42974445209:
+Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute):
 
 - ros-lyrical-ros-gz 3.0.10-1resolute.20260930.020431 - Apache-2.0 (ros_gz metapackage; also recorded in apt-pins.txt)
 - ros-lyrical-ros-gz-sim 3.0.10-1resolute.20260930.014144 - Apache-2.0
@@ -15,13 +15,22 @@ Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute), versions from run 429
 - ros-lyrical-ros-gz-interfaces 3.0.10-1resolute.20260915.051849 - Apache-2.0
 - ros-lyrical-gz-sim-vendor 0.4.6-1resolute.20260930.002648 - Apache-2.0
 - ros-lyrical-gz-sensors-vendor 0.3.5-1resolute.20260914.175731 - Apache-2.0
-- ros-lyrical-rclcpp, ros-lyrical-nav-msgs, ros-lyrical-sensor-msgs, ros-lyrical-geometry-msgs, ros-lyrical-std-msgs, ros-lyrical-rosgraph-msgs, ros-lyrical-tf2-ros - Apache-2.0 (per package copyright in the image). Already present in the digest-pinned image; run 42974445209 printed no "Setting up" version line (apt-get -qq).
-- ros-lyrical-launch-testing, ros-lyrical-launch-testing-ament-cmake, ros-lyrical-launch-testing-ros - Apache-2.0. Already present in the digest-pinned image; no "Setting up" version line in that run.
-- ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-auto, ros-lyrical-ament-cmake-gtest - Apache-2.0. Already present in the digest-pinned image; no "Setting up" version line in that run. The unit and sim jobs now print `dpkg-query -W` for these packages.
+- ros-lyrical-rclcpp 32.0.3-1resolute.20260915.061505 - Apache-2.0 (dpkg-query, run 43022638286)
+- ros-lyrical-nav-msgs 5.9.3-1resolute.20260915.051911 - Apache-2.0 (dpkg-query, run 43022638286)
+- ros-lyrical-sensor-msgs 5.9.3-1resolute.20260915.051912 - Apache-2.0 (dpkg-query, run 43022638286)
+- ros-lyrical-geometry-msgs 5.9.3-1resolute.20260915.045122 - Apache-2.0 (dpkg-query, run 43022638286)
+- ros-lyrical-std-msgs 5.9.3-1resolute.20260915.043001 - Apache-2.0 (dpkg-query, run 43022638286)
+- ros-lyrical-rosgraph-msgs, ros-lyrical-tf2-ros - Apache-2.0 (per package copyright in the image). Present in the digest-pinned image; no dpkg-query line was recorded in run 43022638286.
+- ros-lyrical-launch-testing 3.9.8-1resolute.20260728.175423 - Apache-2.0
+- ros-lyrical-launch-testing-ament-cmake 3.9.8-1resolute.20260728.205136 - Apache-2.0
+- ros-lyrical-launch-testing-ros 0.29.9-1resolute.20260915.073741 - Apache-2.0
+- ros-lyrical-ament-cmake 2.8.8-1resolute.20260728.175713 - Apache-2.0
+- ros-lyrical-ament-cmake-auto 2.8.8-1resolute.20260728.210738 - Apache-2.0
+- ros-lyrical-ament-cmake-gtest 2.8.8-1resolute.20260728.175609 - Apache-2.0
 - Gazebo Jetty / gz-sim libraries pulled by ros-gz vendor packages - Apache-2.0 (per Debian copyright files)
-- GoogleTest via ament_cmake_gtest - BSD-3-Clause. Unit tests in run 42974445209 printed "Running main() from ./googletest/src/gtest_main.cc". The apt package name and version were not printed in that run (already present in the image; apt-get -qq). The unit job now prints `dpkg-query -W googletest libgtest-dev libgmock-dev`.
+- googletest 1.17.0-1build1, libgtest-dev 1.17.0-1build1, libgmock-dev 1.17.0-1build1 - BSD-3-Clause (distro GoogleTest used via ament_cmake_gtest; dpkg-query, run 43022638286)
 
-Mesa / GL packages installed in the sim job (run 42974445209):
+Mesa / GL packages installed in the sim job (run 42974445209; confirmed by dpkg-query in run 43022638286):
 
 - libegl-mesa0 26.0.8-1ubuntu0.3 - MIT (Mesa)
 - libgl1-mesa-dri 26.0.8-1ubuntu0.3 - MIT (Mesa)
@@ -31,7 +40,7 @@ Mesa / GL packages installed in the sim job (run 42974445209):
 CI / Python:
 
 - python3-venv 3.14.3-0ubuntu2 (python3.14-venv 3.14.4-1ubuntu0.2) - PSF / Debian Python license
-- python3-pytest - already present in the digest-pinned image; no "Setting up" version line in run 42974445209. The sim job now prints `dpkg-query -W python3-pytest`.
+- python3-pytest 9.0.2-4 - MIT (dpkg-query, run 43022638286)
 - gcovr 8.8 - BSD-3-Clause (wheel sha256 recorded in .github/workflow-pins.md)
 - gcc/gcov - system toolchain (GPL compiler; does not relicense authored sources)
 
