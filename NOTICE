@@ -1,0 +1,32 @@
+gazebo-robot-ci, Copyright 2026 Arpan Bom
+
+This product includes software developed under the Apache License 2.0 unless noted.
+
+Third-party components (versions as pinned in PLAN.md / lockfiles; confirm exact apt strings on first green CI run):
+
+Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute):
+- ros-lyrical-ros-gz 3.0.12 — Apache-2.0 (ros_gz metapackage)
+- ros-lyrical-ros-gz-sim, ros-lyrical-ros-gz-bridge, ros-lyrical-ros-gz-interfaces — Apache-2.0
+- ros-lyrical-rclcpp, ros-lyrical-nav-msgs, ros-lyrical-sensor-msgs, ros-lyrical-geometry-msgs, ros-lyrical-std-msgs, ros-lyrical-rosgraph-msgs, ros-lyrical-tf2-ros — Apache-2.0 (per package copyright in image)
+- ros-lyrical-launch-testing, ros-lyrical-launch-testing-ament-cmake, ros-lyrical-launch-testing-ros — Apache-2.0
+- ros-lyrical-ament-cmake-gtest — Apache-2.0
+- Gazebo Jetty / gz-sim libraries pulled by ros-gz vendor packages — Apache-2.0 (per Debian copyright files)
+- libgtest / googletest via ament — BSD-3-Clause (record exact package version from `dpkg-query` on first green run)
+
+CI / Python:
+- gcovr 8.8 — BSD-3-Clause
+- gcc/gcov — system toolchain (GPL compiler; does not relicense authored sources)
+
+Web / Node (dev, package-lock.json):
+- Node.js 26.13.0 — MIT
+- npm 11.20.0 — Artistic License 2.0
+- TypeScript 7.0.2 — Apache-2.0
+- Vite 8.3.7 — MIT
+- Vitest 5.1.0 — MIT
+- @playwright/test 1.65.0 — Apache-2.0
+- @types/node 26.6.6 — MIT
+- jsdom (Vitest DOM environment) — MIT
+- Playwright Chromium (CI test tool only, not shipped in Pages bundle)
+
+Container base image:
+- ros:lyrical-ros-base (Docker Library) — MIT/GPL components as listed in image metadata

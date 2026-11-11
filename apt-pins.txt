@@ -1,0 +1,2 @@
+# Direct apt pins for CI (recorded from first GitHub Actions install on Resolute).
+ros-lyrical-ros-gz=3.0.10-1resolute.20260930.020431

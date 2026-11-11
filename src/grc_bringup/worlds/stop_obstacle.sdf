@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<sdf version="1.9">
+  <world name="stop_obstacle">
+    <physics name="1ms" type="dart">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <max_contacts>128</max_contacts>
+      <dart>
+        <collision_detector>bullet</collision_detector>
+      </dart>
+    </physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+
+    <light type="directional" name="sun">
+      <pose>0 0 10 0 0 0</pose>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry><plane><normal>0 0 1</normal></plane></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>100 100</size></plane></geometry>
+        </visual>
+        <sensor name="ground_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>100</update_rate>
+          <topic>contacts</topic>
+          <contact>
+            <collision>collision</collision>
+          </contact>
+        </sensor>
+      </link>
+    </model>
+
+    <model name="obstacle_box">
+      <static>true</static>
+      <pose>2.0 0.0 0.20 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>0.40 0.40 0.40</size></box></geometry>
+          <surface>
+            <friction>
+              <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+            </friction>
+            <contact>
+              <ode><kp>1e6</kp><kd>100</kd></ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>0.40 0.40 0.40</size></box></geometry>
+          <material><ambient>0.9 0.2 0.2 1</ambient></material>
+        </visual>
+        <sensor name="box_contact" type="contact">
+          <always_on>true</always_on>
+          <update_rate>200</update_rate>
+          <topic>/grc/box_contacts</topic>
+          <contact>
+            <collision>collision</collision>
+          </contact>
+        </sensor>
+      </link>
+    </model>
+
+    <include>
+      <uri>model://grc_diff</uri>
+      <name>grc_robot</name>
+      <pose>0 0 0.10 0 0 0</pose>
+      <plugin filename="gz-sim-touchplugin-system" name="gz::sim::systems::TouchPlugin">
+        <target>obstacle_box</target>
+        <namespace>grc_box_touch</namespace>
+        <time>0.001</time>
+        <enabled>true</enabled>
+        <collision>body_collision</collision>
+        <create_contact_sensor_for_collision>true</create_contact_sensor_for_collision>
+      </plugin>
+    </include>
+  </world>
+</sdf>

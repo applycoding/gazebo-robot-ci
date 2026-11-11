@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<sdf version="1.9">
+  <model name="grc_diff">
+    <pose>0 0 0.10 0 0 0</pose>
+    <self_collide>true</self_collide>
+    <link name="base_link">
+      <inertial>
+        <mass>5.0</mass>
+        <inertia>
+          <ixx>0.05</ixx><iyy>0.05</iyy><izz>0.05</izz>
+        </inertia>
+      </inertial>
+      <visual name="body_visual">
+        <geometry>
+          <cylinder><radius>0.15</radius><length>0.20</length></cylinder>
+        </geometry>
+        <material><ambient>0.2 0.4 0.8 1</ambient></material>
+      </visual>
+      <collision name="body_collision">
+        <geometry>
+          <cylinder><radius>0.15</radius><length>0.20</length></cylinder>
+        </geometry>
+        <surface>
+          <friction>
+            <ode><mu>1.0</mu><mu2>1.0</mu2></ode>
+          </friction>
+          <contact>
+            <ode><kp>1e6</kp><kd>100</kd></ode>
+          </contact>
+        </surface>
+      </collision>
+      <sensor name="body_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <topic>/grc/robot_body_contacts</topic>
+        <contact>
+          <collision>body_collision</collision>
+        </contact>
+      </sensor>
+    </link>
+
+    <link name="laser_link">
+      <pose relative_to="base_link">0.12 0 0.27 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia>
+      </inertial>
+    </link>
+
+    <joint name="laser_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>laser_link</child>
+    </joint>
+
+    <link name="lidar_mount">
+      <inertial>
+        <mass>0.01</mass>
+        <inertia><ixx>1e-6</ixx><iyy>1e-6</iyy><izz>1e-6</izz></inertia>
+      </inertial>
+      <sensor name="lidar" type="gpu_lidar">
+        <pose>0 0 0 0 0 0</pose>
+        <always_on>1</always_on>
+        <visualize>false</visualize>
+        <update_rate>10</update_rate>
+        <lidar>
+          <scan>
+            <horizontal>
+              <samples>181</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159265</min_angle>
+              <max_angle>3.14159265</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>1</samples>
+              <resolution>1</resolution>
+              <min_angle>0</min_angle>
+              <max_angle>0</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.08</min>
+            <max>10.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>none</type>
+          </noise>
+        </lidar>
+        <topic>/scan</topic>
+        <frame_id>laser_link</frame_id>
+      </sensor>
+    </link>
+
+    <joint name="lidar_mount_joint" type="fixed">
+      <parent>laser_link</parent>
+      <child>lidar_mount</child>
+    </joint>
+
+    <link name="left_wheel">
+      <pose>0 0.13 0.05 0 1.5707 0</pose>
+      <inertial><mass>0.5</mass></inertial>
+      <visual name="lv"><geometry><cylinder><radius>0.05</radius><length>0.04</length></cylinder></geometry></visual>
+      <collision name="lc"><geometry><cylinder><radius>0.05</radius><length>0.04</length></cylinder></geometry></collision>
+      <sensor name="lc_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <topic>/grc/robot_lc_contacts</topic>
+        <contact>
+          <collision>lc</collision>
+        </contact>
+      </sensor>
+    </link>
+    <link name="right_wheel">
+      <pose>0 -0.13 0.05 0 1.5707 0</pose>
+      <inertial><mass>0.5</mass></inertial>
+      <visual name="rv"><geometry><cylinder><radius>0.05</radius><length>0.04</length></cylinder></geometry></visual>
+      <collision name="rc"><geometry><cylinder><radius>0.05</radius><length>0.04</length></cylinder></geometry></collision>
+      <sensor name="rc_contact" type="contact">
+        <always_on>true</always_on>
+        <update_rate>100</update_rate>
+        <topic>/grc/robot_rc_contacts</topic>
+        <contact>
+          <collision>rc</collision>
+        </contact>
+      </sensor>
+    </link>
+    <link name="caster">
+      <pose>0 0 -0.02 0 0 0</pose>
+      <inertial><mass>0.1</mass></inertial>
+      <visual name="cv"><geometry><sphere><radius>0.03</radius></sphere></geometry></visual>
+      <collision name="cc"><geometry><sphere><radius>0.03</radius></sphere></geometry></collision>
+    </link>
+
+    <joint name="left_wheel_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>left_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+      </axis>
+    </joint>
+    <joint name="right_wheel_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>right_wheel</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit><lower>-1e16</lower><upper>1e16</upper></limit>
+      </axis>
+    </joint>
+    <joint name="caster_joint" type="ball">
+      <parent>base_link</parent>
+      <child>caster</child>
+    </joint>
+
+    <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
+      <left_joint>left_wheel_joint</left_joint>
+      <right_joint>right_wheel_joint</right_joint>
+      <wheel_separation>0.26</wheel_separation>
+      <wheel_radius>0.05</wheel_radius>
+      <max_linear_velocity>0.50</max_linear_velocity>
+      <min_linear_velocity>-0.50</min_linear_velocity>
+      <max_linear_acceleration>1.0</max_linear_acceleration>
+      <min_linear_acceleration>-1.0</min_linear_acceleration>
+      <max_angular_velocity>1.20</max_angular_velocity>
+      <min_angular_velocity>-1.20</min_angular_velocity>
+      <max_angular_acceleration>2.0</max_angular_acceleration>
+      <min_angular_acceleration>-2.0</min_angular_acceleration>
+      <topic>/cmd_vel</topic>
+      <odom_topic>/odom</odom_topic>
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+    </plugin>
+  </model>
+</sdf>

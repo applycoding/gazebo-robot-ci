@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+- ros_topic_name: "/contacts_wheel"
+  gz_topic_name: "/world/reach_goal/model/grc_robot/link/left_wheel/sensor/lc_contact/contact"
+  ros_type_name: "ros_gz_interfaces/msg/Contacts"
+  gz_type_name: "gz.msgs.Contacts"
+  direction: GZ_TO_ROS
+  lazy: false

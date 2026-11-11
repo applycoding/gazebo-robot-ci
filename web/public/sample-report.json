@@ -1,0 +1,49 @@
+{
+  "report_version": 1,
+  "git_sha": "sample-local",
+  "run_id": "sample",
+  "run_url": "https://github.com/applycoding/gazebo-robot-ci/actions",
+  "runner_image": "local",
+  "ros_distro": "lyrical",
+  "gz_version": "sample",
+  "sample": true,
+  "honesty": "Simulation only; recorded CI run from headless gz sim. This JSON is not a live simulator.",
+  "scenarios": [
+    {"name": "s1", "pass": true, "expected": "reach_goal", "observed": "reach_goal"},
+    {"name": "s2", "pass": true, "expected": "obstacle_stop", "observed": "obstacle_stop"},
+    {"name": "s2_mutant_expects_contact", "pass": true, "expected": "box_contact", "observed": "box_contact"},
+    {"name": "s1_brake_expects_miss", "pass": true, "expected": "miss_goal", "observed": "miss_goal"}
+  ],
+  "trajectories": [
+    {
+      "name": "s1",
+      "samples": [
+        {"t_sim": 0, "x": 0, "y": 0, "yaw": 0},
+        {"t_sim": 5, "x": 2, "y": 0.02, "yaw": 0},
+        {"t_sim": 10, "x": 4, "y": 0, "yaw": 0}
+      ]
+    },
+    {
+      "name": "s2",
+      "samples": [
+        {"t_sim": 0, "x": 0, "y": 0, "yaw": 0},
+        {"t_sim": 3, "x": 1.0, "y": 0, "yaw": 0},
+        {"t_sim": 5, "x": 1.26, "y": 0, "yaw": 0}
+      ]
+    },
+    {
+      "name": "s2_mutant_expects_contact",
+      "samples": [
+        {"t_sim": 0, "x": 0, "y": 0, "yaw": 0},
+        {"t_sim": 6, "x": 1.7, "y": 0, "yaw": 0}
+      ]
+    },
+    {
+      "name": "s1_brake_expects_miss",
+      "samples": [
+        {"t_sim": 0, "x": 0, "y": 0, "yaw": 0},
+        {"t_sim": 20, "x": 0, "y": 0, "yaw": 0}
+      ]
+    }
+  ]
+}

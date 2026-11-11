@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="20">
+  <rect width="220" height="20" fill="#555"/>
+  <text x="10" y="14" font-family="sans-serif" font-size="12" fill="#fff">sample</text>
+</svg>
