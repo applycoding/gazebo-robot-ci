@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// gazebo-robot-ci — Arpan Bom
+// gazebo-robot-ci - Arpan Bom
 
 #include "grc_robot/waypoint_follower_node.hpp"
 

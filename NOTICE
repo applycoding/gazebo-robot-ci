@@ -2,31 +2,61 @@ gazebo-robot-ci, Copyright 2026 Arpan Bom
 
 This product includes software developed under the Apache License 2.0 unless noted.
 
-Third-party components (versions as pinned in PLAN.md / lockfiles; confirm exact apt strings on first green CI run):
+Third-party components. Versions below are taken from GitHub Actions run 42974445209
+logs, apt-pins.txt, .github/workflow-pins.md, .github/workflows/ci.yml, and
+web/package-lock.json. See REFERENCES.md for upstream project URLs and for
+projects used as references only.
 
-Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute):
-- ros-lyrical-ros-gz 3.0.12 — Apache-2.0 (ros_gz metapackage)
-- ros-lyrical-ros-gz-sim, ros-lyrical-ros-gz-bridge, ros-lyrical-ros-gz-interfaces — Apache-2.0
-- ros-lyrical-rclcpp, ros-lyrical-nav-msgs, ros-lyrical-sensor-msgs, ros-lyrical-geometry-msgs, ros-lyrical-std-msgs, ros-lyrical-rosgraph-msgs, ros-lyrical-tf2-ros — Apache-2.0 (per package copyright in image)
-- ros-lyrical-launch-testing, ros-lyrical-launch-testing-ament-cmake, ros-lyrical-launch-testing-ros — Apache-2.0
-- ros-lyrical-ament-cmake-gtest — Apache-2.0
-- Gazebo Jetty / gz-sim libraries pulled by ros-gz vendor packages — Apache-2.0 (per Debian copyright files)
-- libgtest / googletest via ament — BSD-3-Clause (record exact package version from `dpkg-query` on first green run)
+Runtime / robotics (apt, ROS 2 Lyrical / Ubuntu Resolute), versions from run 42974445209:
+
+- ros-lyrical-ros-gz 3.0.10-1resolute.20260930.020431 - Apache-2.0 (ros_gz metapackage; also recorded in apt-pins.txt)
+- ros-lyrical-ros-gz-sim 3.0.10-1resolute.20260930.014144 - Apache-2.0
+- ros-lyrical-ros-gz-bridge 3.0.10-1resolute.20260915.142616 - Apache-2.0
+- ros-lyrical-ros-gz-interfaces 3.0.10-1resolute.20260915.051849 - Apache-2.0
+- ros-lyrical-gz-sim-vendor 0.4.6-1resolute.20260930.002648 - Apache-2.0
+- ros-lyrical-gz-sensors-vendor 0.3.5-1resolute.20260914.175731 - Apache-2.0
+- ros-lyrical-rclcpp, ros-lyrical-nav-msgs, ros-lyrical-sensor-msgs, ros-lyrical-geometry-msgs, ros-lyrical-std-msgs, ros-lyrical-rosgraph-msgs, ros-lyrical-tf2-ros - Apache-2.0 (per package copyright in the image). Already present in the digest-pinned image; run 42974445209 printed no "Setting up" version line (apt-get -qq).
+- ros-lyrical-launch-testing, ros-lyrical-launch-testing-ament-cmake, ros-lyrical-launch-testing-ros - Apache-2.0. Already present in the digest-pinned image; no "Setting up" version line in that run.
+- ros-lyrical-ament-cmake, ros-lyrical-ament-cmake-auto, ros-lyrical-ament-cmake-gtest - Apache-2.0. Already present in the digest-pinned image; no "Setting up" version line in that run. The unit and sim jobs now print `dpkg-query -W` for these packages.
+- Gazebo Jetty / gz-sim libraries pulled by ros-gz vendor packages - Apache-2.0 (per Debian copyright files)
+- GoogleTest via ament_cmake_gtest - BSD-3-Clause. Unit tests in run 42974445209 printed "Running main() from ./googletest/src/gtest_main.cc". The apt package name and version were not printed in that run (already present in the image; apt-get -qq). The unit job now prints `dpkg-query -W googletest libgtest-dev libgmock-dev`.
+
+Mesa / GL packages installed in the sim job (run 42974445209):
+
+- libegl-mesa0 26.0.8-1ubuntu0.3 - MIT (Mesa)
+- libgl1-mesa-dri 26.0.8-1ubuntu0.3 - MIT (Mesa)
+- mesa-libgallium 26.0.8-1ubuntu0.3 - MIT (Mesa, dependency)
+- libgl1 1.7.0-3 - MIT (GLVND dispatcher, not a Mesa 26.0.8 package)
 
 CI / Python:
-- gcovr 8.8 — BSD-3-Clause
-- gcc/gcov — system toolchain (GPL compiler; does not relicense authored sources)
 
-Web / Node (dev, package-lock.json):
-- Node.js 26.13.0 — MIT
-- npm 11.20.0 — Artistic License 2.0
-- TypeScript 7.0.2 — Apache-2.0
-- Vite 8.3.7 — MIT
-- Vitest 5.1.0 — MIT
-- @playwright/test 1.65.0 — Apache-2.0
-- @types/node 26.6.6 — MIT
-- jsdom (Vitest DOM environment) — MIT
-- Playwright Chromium (CI test tool only, not shipped in Pages bundle)
+- python3-venv 3.14.3-0ubuntu2 (python3.14-venv 3.14.4-1ubuntu0.2) - PSF / Debian Python license
+- python3-pytest - already present in the digest-pinned image; no "Setting up" version line in run 42974445209. The sim job now prints `dpkg-query -W python3-pytest`.
+- gcovr 8.8 - BSD-3-Clause (wheel sha256 recorded in .github/workflow-pins.md)
+- gcc/gcov - system toolchain (GPL compiler; does not relicense authored sources)
+
+Web / Node (dev, package-lock.json and run 42974445209 web job):
+
+- Node.js 26.13.0 - MIT
+- npm 11.20.0 - Artistic License 2.0
+- TypeScript 7.0.2 - Apache-2.0
+- Vite 8.3.7 - MIT
+- Vitest 5.1.0 - MIT
+- @playwright/test 1.65.0 - Apache-2.0
+- @types/node 26.6.6 - MIT
+- jsdom 26.1.0 - MIT (Vitest DOM environment; resolved in package-lock.json)
+- Playwright Chromium: Chrome for Testing 158.0.8127.18 (playwright chromium v1254), installed in the web job of run 42974445209. CI test tool only, not shipped in the Pages bundle.
+
+GitHub Actions SHA pins (from .github/workflow-pins.md and .github/workflows/ci.yml):
+
+- actions/checkout 11d5960a326750d5838078e36cf38b85af677262 - MIT
+- actions/setup-node 49933ea5288caeca8642d1e84afbd3f7d6820020 - MIT
+- actions/upload-artifact ea165f8d65b6e75b540449e92b4886f43607fa02 - MIT
+- actions/download-artifact d3f86a106a0bac45b974a628896c90dbdf5c8093 - MIT
+- actions/configure-pages 983d7736d9b0ae728b81ab479565c72886d7745b - MIT
+- actions/upload-pages-artifact 56afc609e74202658d3ffba0e8f6dda462b719fa - MIT
+- actions/deploy-pages d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e - MIT
 
 Container base image:
-- ros:lyrical-ros-base (Docker Library) — MIT/GPL components as listed in image metadata
+
+- ros:lyrical-ros-base@sha256:3224ee150cb02eb89a5e0811bc267b57ed3a91b9c10191df57810726a7e916d7 - MIT/GPL components as listed in image metadata

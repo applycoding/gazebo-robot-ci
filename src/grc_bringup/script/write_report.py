@@ -22,7 +22,13 @@ SCENARIO_ORDER = (
 
 
 def git_sha() -> str:
+    sha = os.environ.get('GITHUB_SHA', '').strip()
+    if sha:
+        return sha
     try:
+        subprocess.run(
+            ['git', 'config', '--global', '--add', 'safe.directory', os.getcwd()],
+            check=False, capture_output=True)
         return subprocess.check_output(
             ['git', 'rev-parse', 'HEAD'], text=True).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):

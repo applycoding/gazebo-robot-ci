@@ -1,4 +1,4 @@
-# Build tasks — gazebo-robot-ci
+# Build tasks - gazebo-robot-ci
 
 Execute in order. Follow PLAN.md. Deviate only if a pin or test proves a step broken, and record why. License is **Apache-2.0**, not MIT. Commit author and committer are always **Arpan Bom <applycoding@gmail.com>**. No `Co-authored-by` trailer. No tool credit in the repository.
 
@@ -50,12 +50,12 @@ Each task has acceptance checks. A task is done only when those checks pass.
 
 - Implement the four tests with the readiness, watchdog, and pass predicates in PLAN.md.
 - S2 requires an obstacle trip (`stop_reason=obstacle` and a range < 0.50). A timeout-stop must not pass S2.
-- Mutant requires a robot–box contact with healthy telemetry. Brake-only requires a healthy 20 s miss.
+- Mutant requires a robot-box contact with healthy telemetry. Brake-only requires a healthy 20 s miss.
 - `contact_count` ignores ground contacts. Circle-to-AABB clearance is the S2 margin gate.
 - Sidecar JSON per scenario for the report writer.
 - Predicate unit test (or equivalent) that a timeout-stop fixture fails the S2 pass predicate.
 
-**Accept:** Criteria 2–5. Do not move the box or slow the robot to pass.
+**Accept:** Criteria 2-5. Do not move the box or slow the robot to pass.
 
 ## 7. Report, badge, coverage, unit CI job
 
@@ -64,7 +64,7 @@ Each task has acceptance checks. A task is done only when those checks pass.
 - gcovr 8.8 in a venv, filters and `--fail-under-line 80` as locked.
 - `unit` job in `ci.yml` as in PLAN.md.
 
-**Accept:** Criteria 6–8 (report and coverage parts). Core-library coverage ≥ 80%.
+**Accept:** Criteria 6-8 (report and coverage parts). Core-library coverage ≥ 80%.
 
 ## 8. Pages dashboard and Playwright
 
@@ -73,11 +73,11 @@ Each task has acceptance checks. A task is done only when those checks pass.
 - Playwright as locked (127.0.0.1, fixed port, all four rows, trajectory samples not just axes, Chromium with deps).
 - Check in `docs/demo.png` locally once. CI uploads the screenshot and does not commit it.
 
-**Accept:** Criteria 9–10.
+**Accept:** Criteria 9-10.
 
 ## 9. Single workflow, pages job, README honesty
 
 - One `ci.yml`: `unit` and `sim` independent, `web` needs `sim` and copies report/badge before Playwright, `pages` needs all three and deploys only a main push of that SHA. SHA-pinned actions, digest-pinned `docker run` on `ubuntu-26.04`. No `ubuntu-latest`, no `pull_request_target`, no second workflow.
-- Finish README and NOTICE as in criteria 12–15, 17–18, including differentiation from ros2-nav2-slam-sim and a full dev-dependency inventory.
+- Finish README and NOTICE as in criteria 12-15, 17-18, including differentiation from ros2-nav2-slam-sim and a full dev-dependency inventory.
 
-**Accept:** Criteria 11–18. Commit author is Arpan Bom `<applycoding@gmail.com>`.
+**Accept:** Criteria 11-18. Commit author is Arpan Bom `<applycoding@gmail.com>`.

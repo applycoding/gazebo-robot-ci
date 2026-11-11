@@ -16,6 +16,7 @@ test('dashboard shows recorded CI output', async ({ page }) => {
   });
 
   await page.goto('./');
+  await expect(page).toHaveTitle(/simulation only/i);
   await expect(page.getByText('Simulation only.')).toBeVisible();
   await expect(
     page.getByText('Recorded CI output; this page does not run Gazebo.'),

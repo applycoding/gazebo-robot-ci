@@ -1,2 +1,2 @@
-# gcovr 8.8 — wheel sha256 from PLAN.md verified at install time in CI.
+# gcovr 8.8 - wheel sha256 from PLAN.md verified at install time in CI.
 gcovr==8.8

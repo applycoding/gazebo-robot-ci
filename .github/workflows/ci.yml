@@ -16,6 +16,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Reject non-ASCII dashes
+        run: |
+          set -euo pipefail
+          if grep -rIPI --exclude-dir=.git '[\x{2014}\x{2013}\x{2212}]' .; then
+            echo "Non-ASCII dashes (U+2014, U+2013, or U+2212) are not allowed" >&2
+            exit 1
+          fi
       - name: Unit build, test, coverage
         run: |
           docker run --rm --init --platform linux/amd64 \
@@ -31,6 +38,14 @@ jobs:
                 ros-lyrical-ament-cmake-gtest \
                 ros-lyrical-rclcpp ros-lyrical-nav-msgs ros-lyrical-sensor-msgs \
                 ros-lyrical-geometry-msgs ros-lyrical-std-msgs
+              echo "CI package versions (unit):"
+              dpkg-query -W -f="\${Package} \${Version}\n" \
+                python3-venv python3-pytest \
+                ros-lyrical-ament-cmake ros-lyrical-ament-cmake-auto \
+                ros-lyrical-ament-cmake-gtest \
+                googletest libgtest-dev libgmock-dev \
+                ros-lyrical-rclcpp ros-lyrical-nav-msgs ros-lyrical-sensor-msgs \
+                ros-lyrical-geometry-msgs ros-lyrical-std-msgs || true
               source /opt/ros/lyrical/setup.bash
               rm -rf build install log
               python3 -m venv /ws/.venv
@@ -72,6 +87,9 @@ jobs:
             -e GITHUB_RUN_ID="${{ github.run_id }}" \
             -e GITHUB_REPOSITORY="${{ github.repository }}" \
             -e GITHUB_SERVER_URL="${{ github.server_url }}" \
+            -e GITHUB_SHA="${{ github.sha }}" \
+            -e ImageVersion="${ImageVersion}" \
+            -e ImageOS="${ImageOS}" \
             -e GRC_ARTIFACTS_DIR=/ws/artifacts \
             ros:lyrical-ros-base@sha256:3224ee150cb02eb89a5e0811bc267b57ed3a91b9c10191df57810726a7e916d7 \
             bash -lc 'set -eo pipefail
@@ -84,6 +102,17 @@ jobs:
                 ros-lyrical-launch-testing-ros ros-lyrical-ament-cmake-gtest python3-pytest \
                 ros-lyrical-gz-sim-vendor ros-lyrical-gz-sensors-vendor \
                 libegl-mesa0 libgl1-mesa-dri libgl1
+              echo "CI package versions (sim):"
+              dpkg-query -W -f="\${Package} \${Version}\n" \
+                ros-lyrical-ros-gz ros-lyrical-ros-gz-sim \
+                ros-lyrical-ros-gz-bridge ros-lyrical-ros-gz-interfaces \
+                ros-lyrical-launch-testing ros-lyrical-launch-testing-ament-cmake \
+                ros-lyrical-launch-testing-ros ros-lyrical-ament-cmake-gtest python3-pytest \
+                ros-lyrical-ament-cmake ros-lyrical-ament-cmake-auto \
+                ros-lyrical-gz-sim-vendor ros-lyrical-gz-sensors-vendor \
+                libegl-mesa0 libgl1-mesa-dri libgl1 \
+                googletest libgtest-dev libgmock-dev || true
+              git config --global --add safe.directory /ws || true
               echo "GZ sim system libs:" && (find /opt/ros/lyrical -name 'libgz-sim-*-system.so' 2>/dev/null | head -40 || true)
               source /opt/ros/lyrical/setup.bash
               rm -rf build install log

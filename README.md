@@ -1,6 +1,6 @@
 # gazebo-robot-ci
 
-Portfolio demo by **Arpan Bom** (`applycoding@gmail.com`). A small C++ ROS 2 waypoint follower with a teaching safety-stop overlay, tested with **gtest** (no Gazebo) and headless **Gazebo Jetty** `launch_testing` scenarios on GitHub Actions. A static dashboard on GitHub Pages shows **recorded CI output** only — it does not run Gazebo.
+Portfolio demo by **Arpan Bom** (`applycoding@gmail.com`). A small C++ ROS 2 waypoint follower with a teaching safety-stop overlay, tested with **gtest** (no Gazebo) and headless **Gazebo Jetty** `launch_testing` scenarios on GitHub Actions. A static dashboard on GitHub Pages shows **recorded CI output** only - it does not run Gazebo.
 
 **Simulation only.** Synthetic worlds; not Nav2; not SLAM; not Gazebo Classic; not a real robot; not a certified safety function. Unlike [applycoding/ros2-nav2-slam-sim](https://github.com/applycoding/ros2-nav2-slam-sim) (Humble + Gazebo Classic, no sim in CI), **this repository does run** `gz sim` headlessly in Actions.
 
@@ -9,7 +9,7 @@ Licensed under the [Apache License, Version 2.0](LICENSE). SPDX headers in autho
 ## Stack
 
 - ROS 2 **Lyrical** + Gazebo **Jetty** via `ros-lyrical-ros-gz` **3.0.10** (recorded in `apt-pins.txt`; PLAN targeted 3.0.12)
-- CPU lidar (`gz-sim-cpu-lidar-system`), DART+Bullet, contact oracles
+- GPU lidar (`type="gpu_lidar"` with `gz-sim-sensors-system` and Mesa software rendering; `gz-sim-cpu-lidar-system` is not in the Lyrical vendor tree), DART+Bullet, contact oracles
 - Digest-pinned CI image: `ros:lyrical-ros-base@sha256:3224ee150cb02eb89a5e0811bc267b57ed3a91b9c10191df57810726a7e916d7`
 - Hosted runner: `ubuntu-26.04` (never `ubuntu-latest`)
 
@@ -38,4 +38,4 @@ See [REFERENCES.md](REFERENCES.md) for permissively licensed projects used as **
 
 ## Author
 
-Arpan Bom — `applycoding@gmail.com`
+Arpan Bom - `applycoding@gmail.com`

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// gazebo-robot-ci — Arpan Bom
+// gazebo-robot-ci - Arpan Bom
 
 #ifndef GRC_ROBOT__WAYPOINT_FOLLOWER_NODE_HPP_
 #define GRC_ROBOT__WAYPOINT_FOLLOWER_NODE_HPP_

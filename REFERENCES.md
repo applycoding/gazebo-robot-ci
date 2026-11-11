@@ -65,8 +65,8 @@ This demo must not duplicate existing applycoding repos:
 
 ## Idea-only or exclude
 
-- ros-controls/gz_ros2_control — Apache-2.0. Idea-only. v1 uses stock `gz-sim-diff-drive-system`, not ros2_control.
-- ros-navigation/navigation2 — mixed licenses; not a dependency. This demo is not a Nav2 stack and must not vendor or copy it.
-- TurtleBot / turtlebot3 / turtlebot4 models — do not copy.
-- applycoding/ros2-nav2-slam-sim — MIT, different stack (Classic + Nav2 + SLAM). Do not copy worlds, descriptions, or prose.
-- GPL or LGPL simulators, planners, or plugins — not dependencies.
+- ros-controls/gz_ros2_control - Apache-2.0. Idea-only. v1 uses stock `gz-sim-diff-drive-system`, not ros2_control.
+- ros-navigation/navigation2 - mixed licenses; not a dependency. This demo is not a Nav2 stack and must not vendor or copy it.
+- TurtleBot / turtlebot3 / turtlebot4 models - do not copy.
+- applycoding/ros2-nav2-slam-sim - MIT, different stack (Classic + Nav2 + SLAM). Do not copy worlds, descriptions, or prose.
+- GPL or LGPL simulators, planners, or plugins - not dependencies.
